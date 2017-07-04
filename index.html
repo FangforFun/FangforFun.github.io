@@ -256,6 +256,315 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/03/RxJava2-0-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://oryb4dbuz.bkt.clouddn.com/image/jpg/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="方宇星">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/RxJava2-0-二/" itemprop="url">跟着最火的用例去学习Rxjava2.0(二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T14:25:55+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/03/RxJava2-0-二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/RxJava2-0-二/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>跟着最火的Sample项目<a href="https://github.com/kaushikgopal/RxJava-Android-Samples#2-accumulate-calls-using-buffer" target="_blank" rel="external">RxJava-Android-Samples</a>学习Rxjava</p>
+<h1 id="简单和高级的轮询操作-interval-repeatWhen"><a href="#简单和高级的轮询操作-interval-repeatWhen" class="headerlink" title="简单和高级的轮询操作(interval ; repeatWhen)"></a>简单和高级的轮询操作(interval ; repeatWhen)</h1><p><img src="http://oryb4dbuz.bkt.clouddn.com/blog4/gif/RxjavaDemo6.gif" alt=""></p>
+<p>这是使用RxJava调度程序进行轮询的示例。这在您想不断轮询服务器并可能获取新数据的情况下很有用。网络呼叫是“模拟的”，所以它强制一个延迟，然后返回一个合成的字符串。</p>
+<p>这有两个变种：</p>
+<ol>
+<li>简单的轮询：说出每5秒钟要执行一定的任务</li>
+<li>增加延迟轮询：说出要在1秒内先执行任务，然后在2秒钟内，然后3秒等等。</li>
+</ol>
+<p>下面上代码: </p>
+<ol>
+<li>简单的轮询: </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">　<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INITIAL_DELAY = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> POLLING_INTERVAL = <span class="number">1000</span>;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> POLL_COUNT = <span class="number">8</span>;</div><div class="line"></div><div class="line">　<span class="keyword">private</span> <span class="keyword">int</span> _counter = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> CompositeDisposable _disposables;</div><div class="line"></div><div class="line"><span class="meta">@OnClick</span>(R.id.btn_start_simple_polling)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartSimplePollingClicked</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> pollCount = POLL_COUNT;</div><div class="line"></div><div class="line">    Disposable d =</div><div class="line">        Flowable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)</div><div class="line">            .map(<span class="keyword">this</span>::_doNetworkCallAndGetStringResult)</div><div class="line">            .take(pollCount)</div><div class="line">            .doOnSubscribe(</div><div class="line">                subscription -&gt; &#123;</div><div class="line">                  _log(String.format(<span class="string">"Start simple polling - %s"</span>, _counter));</div><div class="line">                &#125;)</div><div class="line">            .subscribe(</div><div class="line">                taskName -&gt; &#123;</div><div class="line">                  _log(</div><div class="line">                      String.format(</div><div class="line">                          Locale.US,</div><div class="line">                          <span class="string">"Executing polled task [%s] now time : [xx:%02d]"</span>,</div><div class="line">                          taskName,</div><div class="line">                          _getSecondHand()));</div><div class="line">                &#125;);</div><div class="line"></div><div class="line">    _disposables.add(d);</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> String <span class="title">_doNetworkCallAndGetStringResult</span><span class="params">(<span class="keyword">long</span> attempt)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="keyword">if</span> (attempt == <span class="number">4</span>) &#123;</div><div class="line">        <span class="comment">// randomly make one event super long so we test that the repeat logic waits</span></div><div class="line">        <span class="comment">// and accounts for this.</span></div><div class="line">        Thread.sleep(<span class="number">9000</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        Thread.sleep(<span class="number">3000</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">      Timber.d(<span class="string">"Operation was interrupted"</span>);</div><div class="line">    &#125;</div><div class="line">    _counter++;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> String.valueOf(_counter);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>增加延迟轮询：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@OnClick</span>(R.id.btn_start_increasingly_delayed_polling)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartIncreasinglyDelayedPolling</span><span class="params">()</span> </span>&#123;</div><div class="line">    _setupLogger();</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> pollingInterval = POLLING_INTERVAL;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> pollCount = POLL_COUNT;</div><div class="line"></div><div class="line">    _log(</div><div class="line">        String.format(</div><div class="line">            Locale.US, <span class="string">"Start increasingly delayed polling now time: [xx:%02d]"</span>, _getSecondHand()));</div><div class="line"></div><div class="line">    _disposables.add(</div><div class="line">        Flowable.just(<span class="number">1L</span>)</div><div class="line">            .repeatWhen(<span class="keyword">new</span> RepeatWithDelay(pollCount, pollingInterval))</div><div class="line">            .subscribe(</div><div class="line">                o -&gt;</div><div class="line">                    _log(</div><div class="line">                        String.format(</div><div class="line">                            Locale.US,</div><div class="line">                            <span class="string">"Executing polled task now time : [xx:%02d]"</span>,</div><div class="line">                            _getSecondHand())),</div><div class="line">                e -&gt; Timber.d(e, <span class="string">"arrrr. Error"</span>)));</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RepeatWithDelay</span> <span class="keyword">implements</span> <span class="title">Function</span>&lt;<span class="title">Flowable</span>&lt;<span class="title">Object</span>&gt;, <span class="title">Publisher</span>&lt;<span class="title">Long</span>&gt;&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> _repeatLimit;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> _pollingInterval;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> _repeatCount = <span class="number">1</span>;</div><div class="line"></div><div class="line">    RepeatWithDelay(<span class="keyword">int</span> repeatLimit, <span class="keyword">int</span> pollingInterval) &#123;</div><div class="line">      _pollingInterval = pollingInterval;</div><div class="line">      _repeatLimit = repeatLimit;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// this is a notificationhandler, all we care about is</span></div><div class="line">    <span class="comment">// the emission "type" not emission "content"</span></div><div class="line">    <span class="comment">// only onNext triggers a re-subscription</span></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Publisher&lt;Long&gt; <span class="title">apply</span><span class="params">(Flowable&lt;Object&gt; inputFlowable)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">      <span class="comment">// it is critical to use inputObservable in the chain for the result</span></div><div class="line">      <span class="comment">// ignoring it and doing your own thing will break the sequence</span></div><div class="line"></div><div class="line">      <span class="keyword">return</span> inputFlowable.flatMap(</div><div class="line">          <span class="keyword">new</span> Function&lt;Object, Publisher&lt;Long&gt;&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Publisher&lt;Long&gt; <span class="title">apply</span><span class="params">(Object o)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">              <span class="keyword">if</span> (_repeatCount &gt;= _repeatLimit) &#123;</div><div class="line">                <span class="comment">// terminate the sequence cause we reached the limit</span></div><div class="line">                _log(<span class="string">"Completing sequence"</span>);</div><div class="line">                <span class="keyword">return</span> Flowable.empty();</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="comment">// since we don't get an input</span></div><div class="line">              <span class="comment">// we store state in this handler to tell us the point of time we're firing</span></div><div class="line">              _repeatCount++;</div><div class="line"></div><div class="line">              <span class="keyword">return</span> Flowable.timer(_repeatCount * _pollingInterval, TimeUnit.MILLISECONDS);</div><div class="line">            &#125;</div><div class="line">          &#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h1 id="RxBus：使用RxJava的事件总线-RxRelay-从不终止Subjects-and-debouncedBuffer"><a href="#RxBus：使用RxJava的事件总线-RxRelay-从不终止Subjects-and-debouncedBuffer" class="headerlink" title="RxBus：使用RxJava的事件总线(RxRelay (从不终止Subjects) and debouncedBuffer)"></a>RxBus：使用RxJava的事件总线(RxRelay (从不终止Subjects) and debouncedBuffer)</h1><p><img src="http://oryb4dbuz.bkt.clouddn.com/blog4/gif/RxjavaDemo7.gif" alt=""></p>
+<p>RxBus: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RxBus</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Relay&lt;Object&gt; _bus = PublishRelay.create().toSerialized();</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">    _bus.accept(o);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> Flowable&lt;Object&gt; <span class="title">asFlowable</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> _bus.toFlowable(BackpressureStrategy.LATEST);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasObservers</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> _bus.hasObservers();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>BottomFragment接收事件: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onStart();</div><div class="line">    _disposables = <span class="keyword">new</span> CompositeDisposable();</div><div class="line"></div><div class="line">    ConnectableFlowable&lt;Object&gt; tapEventEmitter = _rxBus.asFlowable().publish();</div><div class="line"></div><div class="line">    _disposables <span class="comment">//</span></div><div class="line">        .add(</div><div class="line">        tapEventEmitter.subscribe(</div><div class="line">            event -&gt; &#123;</div><div class="line">              <span class="keyword">if</span> (event <span class="keyword">instanceof</span> RxBusDemoFragment.TapEvent) &#123;</div><div class="line">                _showTapText();</div><div class="line">              &#125;</div><div class="line">            &#125;));</div><div class="line"></div><div class="line">    _disposables.add(</div><div class="line">        tapEventEmitter</div><div class="line">            .publish(stream -&gt; stream.buffer(stream.debounce(<span class="number">1</span>, TimeUnit.SECONDS)))</div><div class="line">            .observeOn(AndroidSchedulers.mainThread())</div><div class="line">            .subscribe(</div><div class="line">                taps -&gt; &#123;</div><div class="line">                  _showTapCount(taps.size());</div><div class="line">                &#125;));</div><div class="line"></div><div class="line">    _disposables.add(tapEventEmitter.connect());</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>TopFragment发送事件: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@OnClick</span>(R.id.btn_demo_rxbus_tap)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTapButtonClicked</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (_rxBus.hasObservers()) &#123;</div><div class="line">      _rxBus.send(<span class="keyword">new</span> RxBusDemoFragment.TapEvent());</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h1 id="表单验证-combineLatest"><a href="#表单验证-combineLatest" class="headerlink" title="表单验证(.combineLatest)"></a>表单验证(.combineLatest)</h1><p><img src="http://oryb4dbuz.bkt.clouddn.com/blog4/gif/RxjavaDemo8.gif" alt=""></p>
+<p>.combineLatest允许您在单个位置一次紧凑地监视多个可观察状态。演示的示例显示了如何使用它.combineLatest来验证基本形式。该表格有3个主要输入被认为是“有效的”（电子邮件，密码和数字）。一旦所有输入都有效，表单将变为有效（下面的按钮背景变为蓝色：P）。如果不是，则会针对无效输入显示错误。</p>
+<p>我们有3个独立的可观察者跟踪每个表单字段的文本/输入更改（RxAndroid WidgetObservable可以方便地监视文本更改）。在所有 3个输入都注意到事件发生变化后，结果为“combined”，并对表单进行有效性评估。</p>
+<p>请注意，Func3检查有效性的功能只有在所有3个输入都接收到文本更改事件之后才会启动。</p>
+<p>当您在表单中输入更多数量的输入字段时，此技术的值将变得更加明显。否则用一堆布尔值来处理它，使得代码变得混乱，很难跟踪。但使用.combineLatest所有这些逻辑集中在一个很好的紧凑的代码块（我仍然使用布尔，但这是为了使示例更易读）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(</span></span></div><div class="line">      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) &#123;</div><div class="line">    View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest, container, <span class="keyword">false</span>);</div><div class="line">    unbinder = ButterKnife.bind(<span class="keyword">this</span>, layout);</div><div class="line"></div><div class="line">    _emailChangeObservable =</div><div class="line">        RxTextView.textChanges(_email).skip(<span class="number">1</span>).toFlowable(BackpressureStrategy.LATEST);</div><div class="line">    _passwordChangeObservable =</div><div class="line">        RxTextView.textChanges(_password).skip(<span class="number">1</span>).toFlowable(BackpressureStrategy.LATEST);</div><div class="line">    _numberChangeObservable =</div><div class="line">        RxTextView.textChanges(_number).skip(<span class="number">1</span>).toFlowable(BackpressureStrategy.LATEST);</div><div class="line"></div><div class="line">    _combineLatestEvents();</div><div class="line"></div><div class="line">    <span class="keyword">return</span> layout;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">_combineLatestEvents</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    _disposableObserver =</div><div class="line">        <span class="keyword">new</span> DisposableSubscriber&lt;Boolean&gt;() &#123;</div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Boolean formValid)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (formValid) &#123;</div><div class="line">              _btnValidIndicator.setBackgroundColor(</div><div class="line">                  ContextCompat.getColor(getContext(), R.color.blue));</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">              _btnValidIndicator.setBackgroundColor(</div><div class="line">                  ContextCompat.getColor(getContext(), R.color.gray));</div><div class="line">            &#125;</div><div class="line">          &#125;</div><div class="line"></div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</div><div class="line">            Timber.e(e, <span class="string">"there was an error"</span>);</div><div class="line">          &#125;</div><div class="line"></div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</div><div class="line">            Timber.d(<span class="string">"completed"</span>);</div><div class="line">          &#125;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">    Flowable.combineLatest(</div><div class="line">            _emailChangeObservable,</div><div class="line">            _passwordChangeObservable,</div><div class="line">            _numberChangeObservable,</div><div class="line">            (newEmail, newPassword, newNumber) -&gt; &#123;</div><div class="line">              <span class="keyword">boolean</span> emailValid = !isEmpty(newEmail) &amp;&amp; EMAIL_ADDRESS.matcher(newEmail).matches();</div><div class="line">              <span class="keyword">if</span> (!emailValid) &#123;</div><div class="line">                _email.setError(<span class="string">"Invalid Email!"</span>);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">boolean</span> passValid = !isEmpty(newPassword) &amp;&amp; newPassword.length() &gt; <span class="number">8</span>;</div><div class="line">              <span class="keyword">if</span> (!passValid) &#123;</div><div class="line">                _password.setError(<span class="string">"Invalid Password!"</span>);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">boolean</span> numValid = !isEmpty(newNumber);</div><div class="line">              <span class="keyword">if</span> (numValid) &#123;</div><div class="line">                <span class="keyword">int</span> num = Integer.parseInt(newNumber.toString());</div><div class="line">                numValid = num &gt; <span class="number">0</span> &amp;&amp; num &lt;= <span class="number">100</span>;</div><div class="line">              &#125;</div><div class="line">              <span class="keyword">if</span> (!numValid) &#123;</div><div class="line">                _number.setError(<span class="string">"Invalid Number!"</span>);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">return</span> emailValid &amp;&amp; passValid &amp;&amp; numValid;</div><div class="line">            &#125;)</div><div class="line">        .subscribe(_disposableObserver);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h1 id="伪缓存：首先从缓存中检索数据，然后进行网络调用（concat，concatEager，merge-publish）"><a href="#伪缓存：首先从缓存中检索数据，然后进行网络调用（concat，concatEager，merge-publish）" class="headerlink" title="伪缓存：首先从缓存中检索数据，然后进行网络调用（concat，concatEager，merge , publish）"></a>伪缓存：首先从缓存中检索数据，然后进行网络调用（concat，concatEager，merge , publish）</h1><p>我们有两个源观察器：磁盘（快速）缓存和网络（新鲜）调用。通常，可观察的磁盘比网络Observable快得多。但是为了演示工作，我们还使用了一个假的“较慢”磁盘缓存来查看操作行为。</p>
+<p>这使用4种技术证明：</p>
+<ul>
+<li>concat</li>
+<li>concatEager</li>
+<li>merge</li>
+<li>publish selector + merge + takeUntil<br>第四种技术可能是你最终想要使用的技术，但是通过技术的发展，了解原因是非常有趣的。</li>
+</ul>
+<p>concat是很棒的。它从第一个可观察（在我们的情况下为磁盘缓存）中检索信息，然后从后面的网络“可观察”中检索信息。由于磁盘缓存可能更快，所有这些都显得很好，并且磁盘缓存加载速度很快，一旦网络呼叫完成，我们就会转换出“新鲜”的结果。</p>
+<p>问题concat在于后续的observable甚至不会在第一个Observable完成之前启动。这可能是一个问题。我们希望所有可观测资料同时开始，但以我们预期的方式产生结果。谢谢RxJava介绍concatEager哪个是正确的。它启动两个可观察值，但缓冲后者的结果，直到前Observable完成。这是一个完全可行的选择。</p>
+<p>有时候，您只是想立即开始显示结果。假设第一个可观察的（因为一些奇怪的原因）需要很长的时间来运行所有的项目，即使第二个可观察的前几个项目已经下线，它将被强制排队。你不一定要等待任何可观察的。在这些情况下，我们可以使用merge运算符。它们在发射时交织物品。这很有效，一旦显示，就开始吐出结果。</p>
+<p>与concat运算符类似，如果您的第一个Observable总是比第二个Observable更快，那么您将不会遇到任何问题。但是问题merge是：如果由于某些奇怪的原因，缓存发出了一个项目，或者在更新/更新可见性之后发现较慢的可观察值，则会覆盖较新的内容。单击示例中的“MERGE（SLOWER DISK）”按钮，以查看此问题。@JakeWharton和@swankjesse的贡献转到0！在现实世界中，这可能是坏的，因为这意味着新的数据将被过时的磁盘数据覆盖。</p>
+<p>为了解决这个问题，您可以将合并与带有publish“选择器” 的超级漂亮操作符结合使用。我在博客文章中写了这个用法，但是我有Jedi JW感谢提醒这个技巧。我们publish网络可观察，并提供一个选择器，开始从磁盘缓存发射，直到网络可观察开始发射的点。一旦网络可观察开始发射，它将忽略磁盘可见的所有结果。这是完美的，并处理我们可能遇到的任何问题。</p>
+<p>下面贴上第四种publish selector + merge + takeUntil 的代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@OnClick</span>(R.id.btn_pseudoCache_mergeOptimizedSlowDisk)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMergeOptimizedWithSlowDiskBtnClicked</span><span class="params">()</span> </span>&#123;</div><div class="line">    infoText.setText(R.string.msg_pseudoCache_demoInfo_mergeOptimizedSlowDisk);</div><div class="line">    wireupDemo();</div><div class="line"></div><div class="line">    getFreshNetworkData() <span class="comment">//</span></div><div class="line">        .publish(</div><div class="line">            network -&gt; <span class="comment">//</span></div><div class="line">            Observable.merge(</div><div class="line">                    network, <span class="comment">//</span></div><div class="line">                    getSlowCachedDiskData().takeUntil(network)))</div><div class="line">        .subscribeOn(Schedulers.io()) <span class="comment">// we want to add a list item at time of subscription</span></div><div class="line">        .observeOn(AndroidSchedulers.mainThread())</div><div class="line">        .subscribe(</div><div class="line">            <span class="keyword">new</span> DisposableObserver&lt;Contributor&gt;() &#123;</div><div class="line">              <span class="meta">@Override</span></div><div class="line">              <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</div><div class="line">                Timber.d(<span class="string">"done loading all data"</span>);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="meta">@Override</span></div><div class="line">              <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</div><div class="line">                Timber.e(e, <span class="string">"arr something went wrong"</span>);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="meta">@Override</span></div><div class="line">              <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Contributor contributor)</span> </span>&#123;</div><div class="line">                contributionMap.put(contributor.login, contributor.contributions);</div><div class="line">                adapterDetail.clear();</div><div class="line">                adapterDetail.addAll(mapAsList(contributionMap));</div><div class="line">              &#125;</div><div class="line">            &#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">wireupDemo</span><span class="params">()</span> </span>&#123;</div><div class="line">    contributionMap = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line"></div><div class="line">    adapterDetail =</div><div class="line">        <span class="keyword">new</span> ArrayAdapter&lt;&gt;(</div><div class="line">            getActivity(), R.layout.item_log_white, R.id.item_log, <span class="keyword">new</span> ArrayList&lt;&gt;());</div><div class="line">    listDetail.setAdapter(adapterDetail);</div><div class="line"></div><div class="line">    adapterSubscriptionInfo =</div><div class="line">        <span class="keyword">new</span> ArrayAdapter&lt;&gt;(</div><div class="line">            getActivity(), R.layout.item_log_white, R.id.item_log, <span class="keyword">new</span> ArrayList&lt;&gt;());</div><div class="line">    listSubscriptionInfo.setAdapter(adapterSubscriptionInfo);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> Observable&lt;Contributor&gt; <span class="title">getSlowCachedDiskData</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> Observable.timer(<span class="number">1</span>, TimeUnit.SECONDS).flatMap(dummy -&gt; getCachedDiskData());</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> Observable&lt;Contributor&gt; <span class="title">getCachedDiskData</span><span class="params">()</span> </span>&#123;</div><div class="line">    List&lt;Contributor&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    Map&lt;String, Long&gt; map = dummyDiskData();</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (String username : map.keySet()) &#123;</div><div class="line">      Contributor c = <span class="keyword">new</span> Contributor();</div><div class="line">      c.login = username;</div><div class="line">      c.contributions = map.get(username);</div><div class="line">      list.add(c);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> Observable.fromIterable(list) <span class="comment">//</span></div><div class="line">        .doOnSubscribe(</div><div class="line">            (data) -&gt;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()) <span class="comment">//</span></div><div class="line">                    .post(() -&gt; adapterSubscriptionInfo.add(<span class="string">"(disk) cache subscribed"</span>))) <span class="comment">//</span></div><div class="line">        .doOnComplete(</div><div class="line">            () -&gt;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()) <span class="comment">//</span></div><div class="line">                    .post(() -&gt; adapterSubscriptionInfo.add(<span class="string">"(disk) cache completed"</span>)));</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> Observable&lt;Contributor&gt; <span class="title">getFreshNetworkData</span><span class="params">()</span> </span>&#123;</div><div class="line">    String githubToken = getResources().getString(R.string.github_oauth_token);</div><div class="line">    GithubApi githubService = GithubService.createGithubService(githubToken);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> githubService</div><div class="line">        .contributors(<span class="string">"square"</span>, <span class="string">"retrofit"</span>)</div><div class="line">        .flatMap(Observable::fromIterable)</div><div class="line">        .doOnSubscribe(</div><div class="line">            (data) -&gt;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()) <span class="comment">//</span></div><div class="line">                    .post(() -&gt; adapterSubscriptionInfo.add(<span class="string">"(network) subscribed"</span>))) <span class="comment">//</span></div><div class="line">        .doOnComplete(</div><div class="line">            () -&gt;</div><div class="line">                <span class="keyword">new</span> Handler(Looper.getMainLooper()) <span class="comment">//</span></div><div class="line">                    .post(() -&gt; adapterSubscriptionInfo.add(<span class="string">"(network) completed"</span>)));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://oryb4dbuz.bkt.clouddn.com/image/jpg/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="方宇星">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/" itemprop="url">自定义FloatingActionButton的Behavior只隐藏不出现的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T11:46:52+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="http://oryb4dbuz.bkt.clouddn.com/blog3/gif/floatingactionbutton.gif" alt=""></p>
+<ul>
+<li>把 SDK 改成了25，然后就出现了题目中所说的问题，上滑隐藏，接下来不管怎么滑都无法显示出来了，带着疑问上网各种找，好不容易找到一篇相关的，当时作者给的解决方案是改回24，但明显不符合我的要求，然后作者还给出了问题的卡住点，是 Behavior 里面的 onNestedScroll 方法，然后我切换了24 以及 25 两个版本的SDK分别进行了调试，才发现确实是这样的，24 SDK时不管上滑下滑均会调用到这个方法，但是25 SDK起就只会跑两次，后来不管怎么滑都无法调用那个方法。</li>
+<li><p>那么是否是因为有新的方法替代了呢？翻了翻对应的方法，发现并没有，方法没有过期，也没有出现新的方法。</p>
+</li>
+<li><p>瞬间就蒙了，切回24那我7.1的新特性就无法实现了，接下来我检查了下Behavior所用到的库，发现用到了 design 库，然后我就想会不会是这个库的版本的问题？</p>
+</li>
+<li><p>去谷歌那找了这个库的历史版本，发现25 SDK已经有了四个版本：25.0.0，25.0.1，25.1.0，25.1.1。</p>
+</li>
+<li><p>当时项目里面用的是最新的25.1.1，我试着单独把 design 库的版本切回25.0.0，重新 run 一遍，发现 Behavior 居然正常工作了！然后我又切了25.0.1也可以，但当我切到25.1.0以及25.1.1的时候又不行了。</p>
+</li>
+<li><p>所以初步断定这个可能是25.1.0和25.1.1两个版本的 design 库的 bug。</p>
+</li>
+<li><p>总结：解决方法是单独把 design 库切回25.0.0或者25.0.1版本。</p>
+<p>代码中的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (view.getVisibility() == GONE) &#123;  </div><div class="line">    <span class="comment">// If the child is GONE, skip...  </span></div><div class="line">    <span class="keyword">continue</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>是在25 SDK 后加入的，那么问题的来源就找到了：我们 FloatingActionButton 的 Behavior 里面当向上滑动时通过调用 animateOut(final FloatingActionButton button) 方法让其隐藏，动画效果结束后我们调用的正是 setVisibility(View.GONE) 方法，这样就导致了CoordinatorLayout 在 onNestedScroll() 方法中因为其 getVisibility() == GONE 所以就被略过了，并不会触发 FloatingActionButton 的 onNestedScroll() 方法，这样就导致了下滑无法让其出现的问题。</p>
+<ul>
+<li>那么解决方法很简单，不要用 hide() 和 setVisibility(View.GONE) 方法，可以改用 setVisibility(View.INVISIBLE) 方法；或者调整为将其滑出屏幕显示范围来达到隐藏的效果。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/26/Rxjava2-0-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -334,8 +643,7 @@
       
         
           
-            <p> 跟着最火的Sample项目<a href="https://github.com/kaushikgopal/RxJava-Android-Samples#2-accumulate-calls-using-buffer" target="_blank" rel="external">RxJava-Android-Samples</a>学习Rxjava</p>
-<h2 id="后台工作和并发-Schedulers"><a href="#后台工作和并发-Schedulers" class="headerlink" title="后台工作和并发(Schedulers)"></a>后台工作和并发(Schedulers)</h2><ul>
+            <h2 id="后台工作和并发-Schedulers"><a href="#后台工作和并发-Schedulers" class="headerlink" title="后台工作和并发(Schedulers)"></a>后台工作和并发(Schedulers)</h2><ul>
 <li><p>一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。</p>
 </li>
 <li><p>长时间的操作是通过阻塞Thread.sleep调用来模拟的（因为这是在后台线程中完成的，我们的用户界面永远不会中断）。</p>
@@ -836,7 +1144,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -858,7 +1166,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>

@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="bug集," />
 
 
 
@@ -93,16 +93,19 @@
 
 
 
-<meta name="description" content="我的第一篇hexo博客以后会有越来越多的文章;希望能一直坚持下去;">
+<meta name="description" content="把 SDK 改成了25，然后就出现了题目中所说的问题，上滑隐藏，接下来不管怎么滑都无法显示出来了，带着疑问上网各种找，好不容易找到一篇相关的，当时作者给的解决方案是改回24，但明显不符合我的要求，然后作者还给出了问题的卡住点，是 Behavior 里面的 onNestedScroll 方法，然后我切换了24 以及 25 两个版本的SDK分别进行了调试，才发现确实是这样的，24 SDK时不管上滑">
+<meta name="keywords" content="bug集">
 <meta property="og:type" content="article">
-<meta property="og:title" content="First Blood">
-<meta property="og:url" content="http://yoursite.com/2016/06/19/First-Blood/index.html">
+<meta property="og:title" content="自定义FloatingActionButton的Behavior只隐藏不出现的问题">
+<meta property="og:url" content="http://yoursite.com/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/index.html">
 <meta property="og:site_name" content="方宇星">
-<meta property="og:description" content="我的第一篇hexo博客以后会有越来越多的文章;希望能一直坚持下去;">
-<meta property="og:updated_time" content="2017-06-21T01:05:26.185Z">
+<meta property="og:description" content="把 SDK 改成了25，然后就出现了题目中所说的问题，上滑隐藏，接下来不管怎么滑都无法显示出来了，带着疑问上网各种找，好不容易找到一篇相关的，当时作者给的解决方案是改回24，但明显不符合我的要求，然后作者还给出了问题的卡住点，是 Behavior 里面的 onNestedScroll 方法，然后我切换了24 以及 25 两个版本的SDK分别进行了调试，才发现确实是这样的，24 SDK时不管上滑">
+<meta property="og:image" content="http://oryb4dbuz.bkt.clouddn.com/blog3/gif/floatingactionbutton.gif">
+<meta property="og:updated_time" content="2017-07-04T08:30:47.114Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="First Blood">
-<meta name="twitter:description" content="我的第一篇hexo博客以后会有越来越多的文章;希望能一直坚持下去;">
+<meta name="twitter:title" content="自定义FloatingActionButton的Behavior只隐藏不出现的问题">
+<meta name="twitter:description" content="把 SDK 改成了25，然后就出现了题目中所说的问题，上滑隐藏，接下来不管怎么滑都无法显示出来了，带着疑问上网各种找，好不容易找到一篇相关的，当时作者给的解决方案是改回24，但明显不符合我的要求，然后作者还给出了问题的卡住点，是 Behavior 里面的 onNestedScroll 方法，然后我切换了24 以及 25 两个版本的SDK分别进行了调试，才发现确实是这样的，24 SDK时不管上滑">
+<meta name="twitter:image" content="http://oryb4dbuz.bkt.clouddn.com/blog3/gif/floatingactionbutton.gif">
 
 
 
@@ -130,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/19/First-Blood/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/"/>
 
 
 
 
 
-  <title>First Blood | 方宇星</title>
+  <title>自定义FloatingActionButton的Behavior只隐藏不出现的问题 | 方宇星</title>
   
 
 
@@ -255,7 +258,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/19/First-Blood/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Fang">
@@ -272,7 +275,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">First Blood</h1>
+          <h1 class="post-title" itemprop="name headline">自定义FloatingActionButton的Behavior只隐藏不出现的问题</h1>
         
 
         <div class="post-meta">
@@ -284,8 +287,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-19T11:46:51+08:00">
-                2016-06-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T11:46:52+08:00">
+                2017-07-03
               </time>
             
 
@@ -295,28 +298,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/test/" itemprop="url" rel="index">
-                    <span itemprop="name">test</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -325,8 +306,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/06/19/First-Blood/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/19/First-Blood/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -351,7 +332,28 @@
       
 
       
-        <h2 id="我的第一篇hexo博客"><a href="#我的第一篇hexo博客" class="headerlink" title="我的第一篇hexo博客"></a>我的第一篇hexo博客</h2><p>以后会有越来越多的文章;希望能一直坚持下去;</p>
+        <p><img src="http://oryb4dbuz.bkt.clouddn.com/blog3/gif/floatingactionbutton.gif" alt=""></p>
+<ul>
+<li>把 SDK 改成了25，然后就出现了题目中所说的问题，上滑隐藏，接下来不管怎么滑都无法显示出来了，带着疑问上网各种找，好不容易找到一篇相关的，当时作者给的解决方案是改回24，但明显不符合我的要求，然后作者还给出了问题的卡住点，是 Behavior 里面的 onNestedScroll 方法，然后我切换了24 以及 25 两个版本的SDK分别进行了调试，才发现确实是这样的，24 SDK时不管上滑下滑均会调用到这个方法，但是25 SDK起就只会跑两次，后来不管怎么滑都无法调用那个方法。</li>
+<li><p>那么是否是因为有新的方法替代了呢？翻了翻对应的方法，发现并没有，方法没有过期，也没有出现新的方法。</p>
+</li>
+<li><p>瞬间就蒙了，切回24那我7.1的新特性就无法实现了，接下来我检查了下Behavior所用到的库，发现用到了 design 库，然后我就想会不会是这个库的版本的问题？</p>
+</li>
+<li><p>去谷歌那找了这个库的历史版本，发现25 SDK已经有了四个版本：25.0.0，25.0.1，25.1.0，25.1.1。</p>
+</li>
+<li><p>当时项目里面用的是最新的25.1.1，我试着单独把 design 库的版本切回25.0.0，重新 run 一遍，发现 Behavior 居然正常工作了！然后我又切了25.0.1也可以，但当我切到25.1.0以及25.1.1的时候又不行了。</p>
+</li>
+<li><p>所以初步断定这个可能是25.1.0和25.1.1两个版本的 design 库的 bug。</p>
+</li>
+<li><p>总结：解决方法是单独把 design 库切回25.0.0或者25.0.1版本。</p>
+<p>代码中的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (view.getVisibility() == GONE) &#123;  </div><div class="line">    <span class="comment">// If the child is GONE, skip...  </span></div><div class="line">    <span class="keyword">continue</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>是在25 SDK 后加入的，那么问题的来源就找到了：我们 FloatingActionButton 的 Behavior 里面当向上滑动时通过调用 animateOut(final FloatingActionButton button) 方法让其隐藏，动画效果结束后我们调用的正是 setVisibility(View.GONE) 方法，这样就导致了CoordinatorLayout 在 onNestedScroll() 方法中因为其 getVisibility() == GONE 所以就被略过了，并不会触发 FloatingActionButton 的 onNestedScroll() 方法，这样就导致了下滑无法让其出现的问题。</p>
+<ul>
+<li>那么解决方法很简单，不要用 hide() 和 setVisibility(View.GONE) 方法，可以改用 setVisibility(View.INVISIBLE) 方法；或者调整为将其滑出屏幕显示范围来达到隐藏的效果。</li>
+</ul>
 
       
     </div>
@@ -379,6 +381,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/bug集/" rel="tag"># bug集</a>
+          
+        </div>
+      
 
       
       
@@ -388,14 +396,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/06/26/Rxjava2-0-一/" rel="next" title="跟着最火的用例去学习Rxjava2.0(一)">
+                <i class="fa fa-chevron-left"></i> 跟着最火的用例去学习Rxjava2.0(一)
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/26/Behavior_v1.0/" rel="prev" title="初探Android6.0 Behavior">
-                初探Android6.0 Behavior <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/RxJava2-0-二/" rel="prev" title="跟着最火的用例去学习Rxjava2.0(二)">
+                跟着最火的用例去学习Rxjava2.0(二) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -422,8 +434,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/06/19/First-Blood/"
-           data-title="First Blood" data-url="http://yoursite.com/2016/06/19/First-Blood/">
+      <div class="ds-thread" data-thread-key="2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/"
+           data-title="自定义FloatingActionButton的Behavior只隐藏不出现的问题" data-url="http://yoursite.com/2017/07/03/自定义FloatingActionButton的Behavior只隐藏不出现的问题/">
       </div>
     
   </div>
@@ -447,17 +459,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://oryb4dbuz.bkt.clouddn.com/image/jpg/avatar.jpg"
@@ -536,22 +539,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#我的第一篇hexo博客"><span class="nav-number">1.</span> <span class="nav-text">我的第一篇hexo博客</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
