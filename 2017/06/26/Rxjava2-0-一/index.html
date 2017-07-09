@@ -93,21 +93,21 @@
 
 
 
-<meta name="description" content="后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.sleep调用来模拟的（因为这是在后台线程中完成的，我们的用户界面永远不会中断）。  这个">
+<meta name="description" content="跟着最火的Sample项目RxJava-Android-Samples学习Rxjava 后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.s">
 <meta name="keywords" content="Rxjava">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟着最火的用例去学习Rxjava2.0(一)">
 <meta property="og:url" content="http://yoursite.com/2017/06/26/Rxjava2-0-一/index.html">
 <meta property="og:site_name" content="方宇星">
-<meta property="og:description" content="后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.sleep调用来模拟的（因为这是在后台线程中完成的，我们的用户界面永远不会中断）。  这个">
+<meta property="og:description" content="跟着最火的Sample项目RxJava-Android-Samples学习Rxjava 后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.s">
 <meta property="og:image" content="http://oryb4dbuz.bkt.clouddn.com/blog2/gif/RxjavaDemo1.gif">
 <meta property="og:image" content="http://oryb4dbuz.bkt.clouddn.com/blog2/gif/RxjavaDemo2.gif">
 <meta property="og:image" content="http://oryb4dbuz.bkt.clouddn.com/blog2/gif/RxjavaDemo3.gif">
 <meta property="og:image" content="http://oryb4dbuz.bkt.clouddn.com/blog2/gif/RxjavaDemo5.gif">
-<meta property="og:updated_time" content="2017-07-03T06:27:18.629Z">
+<meta property="og:updated_time" content="2017-07-05T01:19:06.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着最火的用例去学习Rxjava2.0(一)">
-<meta name="twitter:description" content="后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.sleep调用来模拟的（因为这是在后台线程中完成的，我们的用户界面永远不会中断）。  这个">
+<meta name="twitter:description" content="跟着最火的Sample项目RxJava-Android-Samples学习Rxjava 后台工作和并发(Schedulers) 一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。  长时间的操作是通过阻塞Thread.s">
 <meta name="twitter:image" content="http://oryb4dbuz.bkt.clouddn.com/blog2/gif/RxjavaDemo1.gif">
 
 
@@ -335,7 +335,8 @@
       
 
       
-        <h2 id="后台工作和并发-Schedulers"><a href="#后台工作和并发-Schedulers" class="headerlink" title="后台工作和并发(Schedulers)"></a>后台工作和并发(Schedulers)</h2><ul>
+        <p>跟着最火的Sample项目<a href="https://github.com/kaushikgopal/RxJava-Android-Samples#2-accumulate-calls-using-buffer" target="_blank" rel="external">RxJava-Android-Samples</a>学习Rxjava</p>
+<h2 id="后台工作和并发-Schedulers"><a href="#后台工作和并发-Schedulers" class="headerlink" title="后台工作和并发(Schedulers)"></a>后台工作和并发(Schedulers)</h2><ul>
 <li><p>一个常见的需求是将耗时操作放到后台线程（非UI线程），并在结束时将结果送回UI /主线程。这是一个可以将长时间运行的操作放在到后台线程的演示。操作完成后，我们恢复主线程。所有使用RxJava！认为这是AsyncTasks的替代品。</p>
 </li>
 <li><p>长时间的操作是通过阻塞Thread.sleep调用来模拟的（因为这是在后台线程中完成的，我们的用户界面永远不会中断）。</p>
@@ -508,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -518,10 +519,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
-              
+              </a>
             </div>
           
 
@@ -529,10 +530,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
